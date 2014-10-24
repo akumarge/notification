@@ -1,0 +1,89 @@
+<html>
+<head>
+	<title>Blog</title>
+	 <link rel="stylesheet" type="text/css" href="/css/style.css">
+	 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container jumbotron">
+		<h3 style="margin-left: 41%">Login </h3>
+		<div class="login_form_container">
+			<form class="navbar-form navbar-left" role="login" action="/login" method="POST">
+				<div class="form-group">
+					<div>
+						<input type="text" name="username" class="form-control" id="login_user_name" placeholder="Email" required>
+					</div>
+					<div>
+						<input type="password" name="password" class="form-control" id="login_user_password" placeholder="Password" required>
+					</div>
+					<div>
+						<button type="submit" class="btn btn-primary login_button">Login</button><br>
+						<span id="err">{{err}}</span>
+					</div>
+					
+				</div>
+			</form>
+		</div>
+		
+	</div>
+	
+</body>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+
+</html>
+
+<!--<html>
+<head>
+	<title>Home</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	 <style type="text/css">
+	 	#message,#message_button{
+	 		display:none;
+	 	}
+	 </style>
+</head>
+<body>
+	<span id="msg_1"></span>
+	<div class="content jumbotron">
+		
+		{% for det in user %}
+		
+			<div><a href="#" id="author">{{det.name}}</a><div>
+			<div><span class="content_title">Title:{{det.title}}</span></div>
+			<div><p class="content_body">{{det.body}}</p></div>
+			<div><span class="content_like">Like:{{det.like}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="show_msg" href="#">send message</a></div>
+			<div id="message_container">
+		    <form action="/success" method="post">
+			    <input type="hidden" name="from_user" class="from_user" value={{email}}>
+			    <input type="hidden" name="to_user" class="to_user" value={{det.email}}>
+				<input id="message" name="message" type="text">
+				<button id="message_button">send</button>
+		    </form>
+			</div>
+		{% endfor %}
+
+	</div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript">
+ $('.show_msg').on('click',function(){
+ 	$('#message,#message_button').slideToggle();
+ });
+</script>
+<script type="text/javascript">
+	var socket = io.connect('http://10.98.6.53:8000');
+	socket.on('msg',function(data){
+		var from_user=$('.from_user').val();
+		console.log(from_user);
+		console.log(data);
+		if(from_user==data.to_user){
+			$('#msg_1').text(data.send_message);
+
+	}
+	});
+</script>
+</html>

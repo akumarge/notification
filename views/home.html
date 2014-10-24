@@ -1,0 +1,158 @@
+<html>
+<head>
+	<title>Home</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="msg_container">
+		<span id="msg_1"></span>
+		<a href="#" class="close">Close</a>
+	</div>
+	<div class="user_details">
+			<div style="margin-left: 36px;"><img src="images/user_thumb2.png"></div>
+			<div id="profile_name">{{name}}
+			<a href="/logout" id="logout_link">Logout</a></div>
+			<div class="notification">
+				<div class="msg_img"><a href="/message/ashok"><img src="images/msg.jpg"><span id="msg_count"></span></a>
+				<a href="/notification/ashok"><img style="margin-left: 48px" src="images/not.jpg"><span id="not_count"></span></div>
+			</div>
+	</div>
+	
+	<div class="content jumbotron">
+		{% for det in content %}
+		
+			<div><a href="#" class="author">{{det.name}}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="content_title">{{det.title}}</span></div>
+			<div class="content_body">{{det.body}}</div>
+			<div><span class="content_like">Like:{{det.like}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</div>
+			<div class="message_container">
+		   
+			    <input type="hidden" name="from_user" class="from_user" value={{email}}>
+			    <input type="hidden" name="to_user" class="to_user" value={{det.email}}>
+			    <input type="hidden" name="to_name" class="to_name" value={{det.name}}>
+			    {% if email!= det.email%}
+			    <a class="show_msg" href="#">send message</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			    <a class="view_profile" href="#">View profile</a>
+			    {% endif %}
+				<input type="text" class="message" name="message" >
+				<button class="message_button">send</button>
+		   
+			</div>
+			<hr>
+		{% endfor %}
+		<input type="hidden" id="count_value" value="1">
+		<input type="hidden" id="count_noti" value="1">
+
+	</div>
+	<div class="edit_form_container signup_form_container">
+			<h3>Profile</h3>
+			<form class="navbar-form navbar-left " role="signup" action="/update" method="post">
+				<div class="form-group">
+					<div>
+						<input type="text" name="edit_user_name" class="form-control" id="edit_user_name" >
+					</div>
+					<div>
+						<input type="text" name="edit_user_gender" class="form-control" id="edit_user_gender"  >
+					</div>
+					<div>
+						<input type="text" name="edit_user_email" class="form-control" id="edit_user_email"   >
+					</div>
+					<div>
+						<input type="text" name="edit_user_mobile" class="form-control" id="edit_user_country"    >
+					</div>
+					<!-- <div>
+						<button class="update_button btn btn-primary signup_button">Update</button>
+						<input type="hidden" id="user_email_hidden" class="user_email_hidden" name="user_email_hidden">
+					</div> -->
+				</div>
+			</form>
+		</div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+
+ $(function(){
+ 	var user_name='';
+ 	$('.show_msg').on('click',function(e){
+ 		$(this).parent().find('.message,.message_button').slideToggle();
+ 	});
+ 	$('#signup_link, #edit_link').on('click',function(event){
+		event.preventDefault();
+		$('.signup_form_container').slideToggle();
+		$('.login_form_container').hide();
+	});
+
+ 	$('.close').on('click',function(e){
+ 		e.preventDefault();
+ 		$('.msg_container').hide();
+ 	});
+ 	var socket = io.connect('http://10.98.6.53');
+ 	$('.view_profile').on('click',function(){
+ 		user_name=$(this).parent().find('.to_name').val();
+ 		console.log('user:'+user_name);
+ 		var from_user=$(this).parent().find('.from_user').val();
+ 		var to_user=$(this).parent().find('.to_user').val();
+ 		console.log(from_user);
+ 		console.log(to_user);
+ 		socket.emit('profile',{ 'from_user':from_user,'to_user':to_user});
+ 	});
+ 	$('.message_button').on('click',function(){
+ 		var msg=$(this).parent().find('.message').val();
+ 		var from_user=$(this).parent().find('.from_user').val();
+ 		var to_user=$(this).parent().find('.to_user').val();
+ 		socket.emit('send', {'message':msg, 'to_user':to_user,'from_user':from_user});
+ 		
+ 	});
+
+	socket.on('msg',function(data){
+		var from_user=$('.from_user').val();
+		console.log('hoi'+from_user);
+		console.log(data.to_user);
+		
+		if(from_user==data.to_user){
+			var count=parseInt($('#count_value').val());
+			$('#msg_count').text(count++);
+			$('#count_value').val(count);
+			$('.msg_container').fadeToggle();
+			$('#msg_1').text(data.name+":"+data.send_message);
+		}
+	});
+
+	socket.on('userProfile',function(data){
+		var from_user=$('.from_user').val();
+		$('.signup_form_container').fadeIn();
+		$('#edit_user_name').val(data.pro_name);
+		$('#edit_user_gender').val(data.pro_gender);
+		$('#edit_user_email').val(data.pro_email);
+		$('#edit_user_country').val(data.pro_country);
+		console.log('hi'+from_user);
+		console.log(data.to_user);
+		if(from_user==data.to_user){
+			console.log('i m in');
+			var count=parseInt($('#count_value').val());
+			$('#msg_count').text(count++);
+			$('#count_value').val(count);
+			$('.msg_container').fadeToggle();
+			$('#msg_1').text(data.name+":"+data.send_message);
+		}
+
+	});
+
+	socket.on('noti_user',function(data){
+		console.log('user:'+user_name);
+		console.log('data:'+data);
+		var from_user=$('.from_user').val();
+		if(from_user==data.to_user){
+			var count=parseInt($('#count_value').val());
+			$('#not_count').text(count++);
+			$('#count_noti').val(count);
+			$('.msg_container').fadeToggle();
+			$('#msg_1').text(user_name+":"+data.send_message);
+		}
+	});
+ });	
+</script>
+</html>

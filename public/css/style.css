@@ -1,0 +1,141 @@
+.container{
+	color:#ff0000;
+	margin:5% 0px 0px 0px;
+	height:auto;
+	width:20%;
+}
+.login_form_container ,.signup_form_container{
+	width: 232px;
+	margin:0 auto;
+
+}
+.index_container,.user_details,.content_container{
+	float:left;
+}
+.content_container{
+	width: 55%;
+	margin-right: 5%;
+}
+.form-group div,.index_container div{
+	margin-top: 10px
+}
+
+.signup_form_container{
+	display:none;
+	margin-top: -376px;
+margin-left: 907px;
+}
+
+
+
+}
+
+#signup_link{
+	display: block;
+	float: left;
+	margin-top: 6px;
+	margin-left: 35px;
+}
+
+#edit_link{
+	margin-left: 53px
+}
+#logout_link{
+	margin-left: 28px;
+}
+.login_button ,.signup_button{
+	float:left;
+}
+.user_details{
+	width: 25%;
+}
+.edit_form_container{
+		float: left;
+		width:20%;
+}
+
+.edit_form_container input[type="text"],
+.edit_form_container input[type="password"]{
+	width: 100% !important;
+}
+.formMy{
+	padding: 0;
+}
+.index_container{
+	width: 20%;
+}
+ .jumbotron{
+ 	height:auto;
+ }
+
+ .content{
+ 	width: 100%;
+ }
+
+.jumbotron p{
+ 	font-size: 13px;
+ }
+ .home_container{
+ 	float: left;
+ 	width: 100%;
+ }
+ .outer_container{
+ 	width: 960px;
+ 	margin: 0 auto;
+ 	overflow: hidden;
+ }
+
+ #profile_name{
+ 	margin-left:27px;
+ }
+
+ #back_link{
+ 	float: left;
+margin: 7px 0px 0px 47px;
+ }
+
+ #err{
+ 	color: #ff0000;
+	float: left;
+	margin-top: 27px;
+	margin-left: -57px;
+ }
+
+
+.msg_container{
+	display:none;
+	float: right;
+	height: 100px;
+	width: 300px;
+	background-color: #ff0;
+	margin-top: 35%;
+}
+
+#close{
+	float: right;
+	height: 100px;
+}
+ 
+.jumbotron{
+	width: 70%;
+margin-left: 25%;
+} 
+.content{
+	margin-top:100px;
+}
+
+.message_button,.message
+{
+	display:none;
+}
+.msg_img{
+	margin-top: 22px;
+	margin-left: -9px;
+}
+.content_body,.content_like{
+	margin-left:75px;
+}
+.show_msg{
+	margin-top: 7px;
+margin-left: 75px;
+}
